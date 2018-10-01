@@ -1,5 +1,9 @@
 package com.adacherSoft.unsplashy.adapter;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +13,7 @@ import android.widget.TextView;
 
 import com.adacherSoft.unsplashy.R;
 import com.adacherSoft.unsplashy.models.Unsplash;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +40,16 @@ public class UnsplashyAdapter extends RecyclerView.Adapter<UnsplashyAdapter.View
         Unsplash unsplash = unsplashList.get(position);
         ImageView photo = holder.unsplashPhoto;
 
-       // Picasso.with(photo.getContext()).load(GET THE SMALL URL FROM THE MODEL).centerCrop().fit().into(photo);
-       // holder.userTv.setText(GET THE USERNAME FROM THE MODEL);
+        Picasso.get().load(unsplash.getUrls().getSmall()).centerCrop().fit().into(photo);
+        TextView textView = holder.userTv;
+        textView.setText(unsplash.getUser().getUsername());
+        int color = Color.parseColor(unsplash.getColor());
+        //holder.userTv.setBackgroundColor(color);
+        textView.setBackgroundTintList(ColorStateList.valueOf(color));
+        /*ViewCompat.setBackgroundTintList(
+                textView,
+                ColorStateList.valueOf(color)
+        );*/
 
     }
 
@@ -49,6 +62,10 @@ public class UnsplashyAdapter extends RecyclerView.Adapter<UnsplashyAdapter.View
     public void update(List<Unsplash> unsplashes) {
         unsplashList.addAll(unsplashes);
         notifyDataSetChanged();
+    }
+
+    public String getColor(int position) {
+        return unsplashList.get(position).getColor();
     }
 
 
